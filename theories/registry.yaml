@@ -3,15 +3,15 @@
 theories:
   - id: T-0001
     family: conservative_eft
-    engine: AnalyticCompiler
+    engine: analytic_compiler
     path: T-0001_conservative_eft/theory.yaml
   - id: T-0002
     family: exploratory_generative
-    engine: VariationalRelaxer
+    engine: variational_relaxer
     path: T-0002_exploratory_generative/theory.yaml
   - id: T-0003
     family: minimal_axiom
-    engine: MinimalAxiomDimensional
+    engine: minimal_axiom
     path: T-0003_minimal_axiom/theory.yaml
 
 policy:

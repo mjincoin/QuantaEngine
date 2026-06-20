@@ -1,4 +1,4 @@
-from quantaengine import minimal_lawbook
+from quantaengine_lattice import minimal_lawbook
 
 
 def test_minimal_lawbook_maps_to_params():

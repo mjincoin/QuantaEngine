@@ -4,7 +4,7 @@ family: minimal_axiom
 version: 0.1.0
 parent_id: null
 
-engine: MinimalAxiomDimensional
+engine: minimal_axiom
 base_config: configs/standard_universe.yaml
 
 philosophy:

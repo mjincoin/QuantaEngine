@@ -1,6 +1,6 @@
 import pytest
 
-from quantaengine import UniverseParams
+from quantaengine_lattice import UniverseParams
 
 
 def test_params_validate_accepts_default():

@@ -10,7 +10,7 @@ import csv
 from dataclasses import replace
 from pathlib import Path
 
-from quantaengine import QuantaEngine, UniverseParams
+from quantaengine_lattice import QuantaEngine, UniverseParams
 
 
 out = Path("runs/parameter_scan")

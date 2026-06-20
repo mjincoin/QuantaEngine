@@ -1,3 +1,8 @@
+> **历史文档（已被取代）**：本文描述的是早期「两方案 + 共识宇宙」的 `cosmogenesis.Arena`，
+> 已被「多方案并行、不合并」的新结构取代。当前权威文档见
+> [REPO_STRUCTURE.md](REPO_STRUCTURE.md) 与
+> [../../plans/2026-06-21-GENESIS_ARENA_V2_PARALLEL_ADVERSARIAL.md](../../plans/2026-06-21-GENESIS_ARENA_V2_PARALLEL_ADVERSARIAL.md)。保留本文仅作设计沿革记录。
+
 # 对抗式宇宙生成（Adversarial Cosmogenesis）设计方案
 
 ## 0. 目标

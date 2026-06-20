@@ -70,77 +70,54 @@ print(report.to_markdown())
 print(report.to_json_dict()["complexity"])
 ```
 
-## Adversarial Cosmogenesis (two co-trained paradigms)
+## cosmogenesis — multi-scheme parallel adversarial universe generation
 
-The `cosmogenesis` package generates a self-consistent universe with **two
-independent paradigms** that optimize separately yet co-train adversarially:
+The `cosmogenesis` package generates self-consistent universes with **multiple
+independent schemes (paradigms) that run in parallel and never merge into a single
+winner**. It has three clearly separated layers (see
+[docs/design/REPO_STRUCTURE.md](docs/design/REPO_STRUCTURE.md)):
 
-- **Scheme A** — the analytic forward-pass compiler above (transparent closed-form
-  layers, hard windows, white-box sensitivity ascent).
-- **Scheme B** — a from-scratch *variational self-consistency relaxation*: emergent
-  scales come from extremizing balance functionals, windows are soft logistics,
-  and a cross-layer **self-consistency residual** plus a fixed-point relaxation can
-  flag a universe as internally inconsistent even when every single window passes —
-  something A's one-pass model cannot detect. It optimizes with an evolution strategy.
+- `cosmogenesis.core` — the shared adversarial I/O contract: every scheme maps a
+  `ParameterVector` to a `UniverseAssessment`.
+- `cosmogenesis.schemes` — one **self-contained subpackage per scheme**, each with
+  its own `engine.py` (physics) and `optimizer.py` (iterative path):
 
-Both consume the **same** `UniverseConfig` / parameter vector (shared entry point)
-and return a common `UniverseAssessment`. Each round they optimize, cross-evaluate,
-**critique the other's champion**, and **consider** the other's suggested fix (A
-adopts B's self-consistency residual as a regularizer; B adopts A's hard-window and
-robustness concerns), converging on a consensus universe robust under both views.
+  | Scheme | Paradigm | Optimizer |
+  |---|---|---|
+  | `analytic_compiler` | forward closed-form effective-physics (white-box) | coordinate ascent |
+  | `variational_relaxer` | self-consistency fixed point + cross-layer residual | (μ+λ) evolution strategy |
+  | `minimal_axiom` | Carr–Rees anthropic inequalities, fewest parameters | coordinate hill-climb |
+
+- `cosmogenesis.arena` — the platform where **named theory lineages** (`T-0001`…,
+  each choosing one scheme) **attack** each other with schema-validated
+  `ChallengeCard`s, **defend** per their `DefensePrior`, are judged by a
+  deterministic **Verifier + Judge**, and are **patched / forked / left unchanged**
+  by a `PatchGate` that preserves parents and **forbids merging**. Selection keeps a
+  **Pareto front + family elites + novelty archive**, and duels/evolution run **in parallel**.
+
+A **scheme** is a method library; a **theory** is a named, versioned lineage that
+uses a scheme plus a config and keeps its own `history`. Adding a scheme means
+dropping a subpackage in `cosmogenesis/schemes/` and registering it — no arena
+code changes.
 
 ```bash
-python -m cosmogenesis run-adversarial \
-  --base configs/standard_universe.yaml --rounds 6 --out reports/adversarial
+python -m cosmogenesis theory-list
+python -m cosmogenesis duel theories/T-0001_conservative_eft/theory.yaml \
+                            theories/T-0003_minimal_axiom/theory.yaml --rounds 1
+python -m cosmogenesis evolve --generations 3 --min-families 3 --no-merge --out reports/arena
 ```
 
 ```python
-from cosmogenesis import run_adversarial
+from cosmogenesis import TheoryRegistry, evolve, list_schemes
 
-result = run_adversarial("configs/standard_universe.yaml", rounds=6, out_dir="reports/adversarial")
-print(result.consensus_vector, result.consensus_score_a, result.consensus_score_b)
-```
-
-Design rationale: [docs/design/ADVERSARIAL_COSMOGENESIS.md](docs/design/ADVERSARIAL_COSMOGENESIS.md).
-
-## GenesisArena — parallel multi-theory adversarial platform (v2)
-
-`genesis_arena` generalizes the two-scheme arena into a **parallel ecosystem of
-independent theory lineages** that challenge each other but are **never merged
-into a single winner**. It builds on three genuinely different physics paradigms
-(the `cosmogenesis` engines):
-
-| Theory | Family | Engine | Paradigm |
-|---|---|---|---|
-| `T-0001` | `conservative_eft` | `AnalyticCompiler` | forward closed-form, white-box |
-| `T-0002` | `exploratory_generative` | `VariationalRelaxer` | self-consistency fixed point |
-| `T-0003` | `minimal_axiom` | `MinimalAxiomDimensional` | Carr–Rees anthropic inequalities, fewest parameters |
-
-Each round theories **attack** each other with schema-validated `ChallengeCard`s,
-**defend** per their `DefensePrior`, are judged by a **deterministic Verifier +
-Judge**, and are **patched / forked / left unchanged** by a `PatchGate` that
-preserves parents and forbids merging. Selection keeps a **Pareto front + family
-elites + novelty archive** (no single-score winner-takes-all), and evolution runs
-theories and duels **in parallel**.
-
-```bash
-python -m genesis_arena theory-list
-python -m genesis_arena duel theories/T-0001_conservative_eft/theory.yaml \
-                             theories/T-0002_exploratory_generative/theory.yaml --rounds 1
-python -m genesis_arena evolve --generations 3 --min-families 3 --no-merge \
-                               --out reports/genesis_arena
-```
-
-```python
-from genesis_arena import TheoryRegistry, evolve
-
+print(list_schemes())  # ['analytic_compiler', 'variational_relaxer', 'minimal_axiom']
 registry = TheoryRegistry.from_dir("theories")
-report = evolve(registry.all(), registry, generations=3, min_families=3, out_dir="reports/genesis_arena")
+report = evolve(registry.all(), registry, generations=3, min_families=3, out_dir="reports/arena")
 print(report.final_families, report.allow_merge)  # multiple families survive; never merged
 ```
 
-Design rationale: [plans/2026-06-21-GENESIS_ARENA_V2_PARALLEL_ADVERSARIAL.md](plans/2026-06-21-GENESIS_ARENA_V2_PARALLEL_ADVERSARIAL.md)
-(improves on [plans/2026-06-21-ADVERSARIAL_SELF_PLAY_IMPLEMENTATION.md](plans/2026-06-21-ADVERSARIAL_SELF_PLAY_IMPLEMENTATION.md)).
+Design: [docs/design/REPO_STRUCTURE.md](docs/design/REPO_STRUCTURE.md),
+[plans/2026-06-21-GENESIS_ARENA_V2_PARALLEL_ADVERSARIAL.md](plans/2026-06-21-GENESIS_ARENA_V2_PARALLEL_ADVERSARIAL.md).
 
 ## Configuration Inheritance
 
@@ -159,17 +136,24 @@ Included variants cover strong electromagnetism, weak and strong gravity, unstab
 ## Repository Layout
 
 ```text
-configs/                 universe inputs and variants
-src/quanta_engine/       multi-scale effective universe pipeline
-src/quantaengine/        legacy scalar-field lattice prototype
-tests/                   unit, integration, CLI, scan, and E2E tests
-examples/                runnable Python demos
-reports/                 reproducible demonstration outputs
-docs/physics_assumptions.md
-plans/                   versioned, executable plan packages
+configs/                       universe inputs and variants
+src/quanta_engine/             effective-physics base pipeline
+src/quantaengine_lattice/      legacy scalar-field lattice prototype (independent)
+src/cosmogenesis/              multi-scheme adversarial universe generation
+  core/                          shared ParameterVector -> UniverseAssessment contract
+  schemes/<name>/                one self-contained scheme (engine.py + optimizer.py)
+  arena/                         theories duel / judge / patch-or-fork / evolve (no merge)
+theories/T-NNNN_<family>/      named theory lineages + per-lineage history.jsonl
+tests/                         unit, integration, CLI, scan, scheme, arena, and E2E tests
+examples/                      runnable Python demos
+reports/                       reproducible demonstration outputs
+docs/design/REPO_STRUCTURE.md  the authoritative directory convention
+plans/                         versioned, executable plan packages
 ```
 
-The original `quantaengine` scalar-field lattice API remains available for compatibility. New effective-universe work should use `quanta_engine` and the `quanta` CLI.
+The legacy `quantaengine_lattice` scalar-field lattice API (formerly `quantaengine`)
+remains available for compatibility but is independent of the effective-physics and
+adversarial stacks. New work should use `quanta_engine` and `cosmogenesis`.
 
 ## Scientific Boundaries
 

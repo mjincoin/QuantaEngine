@@ -4,8 +4,8 @@ import pytest
 
 from quanta_engine.core.schema import load_config
 from quanta_engine.cosmology.friedmann import compute_friedmann_background
-from quantaengine import UniverseParams
-from quantaengine.cosmology import FriedmannBackground
+from quantaengine_lattice import UniverseParams
+from quantaengine_lattice.cosmology import FriedmannBackground
 
 CONFIG = Path(__file__).parents[1] / "configs" / "standard_universe.yaml"
 

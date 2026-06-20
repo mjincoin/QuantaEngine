@@ -1,33 +1,55 @@
-"""Adversarial cosmogenesis: two independent universe-generation paradigms that
-co-optimize through mutual critique.
+"""cosmogenesis: a multi-scheme, parallel, adversarial universe-generation platform.
 
-- Scheme A (``SchemeA``): analytic forward-pass compiler wrapping ``quanta_engine``.
-- Scheme B (``SchemeB``): variational self-consistency field relaxation, built
-  from first principles with an explicit cross-layer residual.
+Three layers, each a clearly named subpackage:
 
-Both consume the same ``UniverseConfig`` / parameter vector (shared entry point)
-and return a common ``UniverseAssessment``. ``run_adversarial`` drives the
-end-to-end generation + iterative adversarial optimization.
+- ``cosmogenesis.core``    the shared adversarial I/O contract (ParameterVector ->
+  UniverseAssessment) every scheme implements.
+- ``cosmogenesis.schemes`` one self-contained subpackage per scheme (paradigm +
+  optimizer): ``analytic_compiler``, ``variational_relaxer``, ``minimal_axiom``.
+- ``cosmogenesis.arena``   the platform that makes named theory lineages duel, be
+  judged, patched/forked (never merged), and evolved with a Pareto ecosystem.
+
+See docs/design/REPO_STRUCTURE.md.
 """
 
-from .arena import Arena, ArenaResult, run_adversarial
-from .assessment import UniverseAssessment
-from .parameters import ParameterVector, apply_vector, vector_from_config
-from .scheme_a import SchemeA
-from .scheme_b import SchemeB
-from .scheme_c import SchemeC
+from .arena import (
+    DuelReport,
+    EvolutionReport,
+    TheoryRegistry,
+    TheorySpec,
+    TournamentReport,
+    evolve,
+    load_theory,
+    run_duel,
+    run_tournament,
+)
+from .core import (
+    ParameterVector,
+    UniverseAssessment,
+    apply_vector,
+    vector_from_config,
+)
+from .schemes import build_scheme, list_schemes
 
 __all__ = [
-    "Arena",
-    "ArenaResult",
-    "run_adversarial",
-    "UniverseAssessment",
+    # core contract
     "ParameterVector",
+    "UniverseAssessment",
     "apply_vector",
     "vector_from_config",
-    "SchemeA",
-    "SchemeB",
-    "SchemeC",
+    # schemes
+    "build_scheme",
+    "list_schemes",
+    # arena platform
+    "TheorySpec",
+    "TheoryRegistry",
+    "load_theory",
+    "run_duel",
+    "DuelReport",
+    "run_tournament",
+    "TournamentReport",
+    "evolve",
+    "EvolutionReport",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import numpy as np
 
-from quantaengine import QuantaEngine, UniverseParams
+from quantaengine_lattice import QuantaEngine, UniverseParams
 
 
 def test_engine_runs_small_2d():

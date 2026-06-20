@@ -4,7 +4,7 @@ family: conservative_eft
 version: 0.1.0
 parent_id: null
 
-engine: AnalyticCompiler
+engine: analytic_compiler
 base_config: configs/standard_universe.yaml
 
 philosophy:

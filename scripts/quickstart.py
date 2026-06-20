@@ -2,8 +2,8 @@
 
 from pathlib import Path
 
-from quantaengine import QuantaEngine, UniverseParams
-from quantaengine.visualize import save_diagnostics
+from quantaengine_lattice import QuantaEngine, UniverseParams
+from quantaengine_lattice.visualize import save_diagnostics
 
 
 params = UniverseParams(
