@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import yaml
@@ -53,7 +53,7 @@ def _jsonable_summary(summary: dict[str, Any]) -> dict[str, Any]:
     return convert(summary)
 
 
-def save_result(result: "UniverseResult", outdir: str | Path) -> None:
+def save_result(result: UniverseResult, outdir: str | Path) -> None:
     """Save result arrays and metadata."""
 
     out = Path(outdir)

@@ -57,7 +57,7 @@ class LawBook:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "LawBook":
+    def from_dict(cls, data: dict[str, Any]) -> LawBook:
         constants = [ConstantSpec(**item) for item in data.get("constants", [])]
         fields_ = [FieldSpec(**item) for item in data.get("fields", [])]
         couplings = [CouplingSpec(**item) for item in data.get("couplings", [])]

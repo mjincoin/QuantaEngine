@@ -1,0 +1,6 @@
+inherit: standard_universe.yaml
+universe:
+  name: strong_alpha_universe
+  description: Universe with a 20 percent stronger electromagnetic coupling.
+dimensionless:
+  alpha_scale: 1.2

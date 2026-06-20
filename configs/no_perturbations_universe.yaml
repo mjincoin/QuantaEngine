@@ -1,0 +1,6 @@
+inherit: standard_universe.yaml
+universe:
+  name: no_perturbations_universe
+  description: A smooth universe without primordial structure seeds.
+cosmology:
+  primordial_amplitude: 0.0

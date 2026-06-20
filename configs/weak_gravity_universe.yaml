@@ -1,0 +1,6 @@
+inherit: standard_universe.yaml
+universe:
+  name: weak_gravity_universe
+  description: Universe with weaker effective gravity and longer-lived stars.
+dimensionless:
+  gravity_scale: 0.1

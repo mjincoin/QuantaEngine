@@ -20,7 +20,7 @@ class ScalarFieldState:
     time: float
     scale_factor: float
 
-    def copy(self) -> "ScalarFieldState":
+    def copy(self) -> ScalarFieldState:
         return ScalarFieldState(
             phi=self.phi.copy(),
             pi=self.pi.copy(),

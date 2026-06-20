@@ -1,0 +1,6 @@
+inherit: standard_universe.yaml
+universe:
+  name: no_stable_atoms_universe
+  description: Supercritical electromagnetic coupling prevents stable hydrogen.
+dimensionless:
+  alpha_scale: 200.0

@@ -1,0 +1,6 @@
+inherit: standard_universe.yaml
+universe:
+  name: long_lived_stars_universe
+  description: Weaker gravity extends the characteristic stellar lifetime.
+dimensionless:
+  gravity_scale: 0.3

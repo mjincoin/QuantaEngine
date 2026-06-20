@@ -1,0 +1,6 @@
+inherit: standard_universe.yaml
+universe:
+  name: strong_gravity_universe
+  description: Strong effective gravity produces short-lived stars.
+dimensionless:
+  gravity_scale: 100.0

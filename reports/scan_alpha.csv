@@ -1,0 +1,6 @@
+parameter,value,stable_hydrogen,binding_energy_eV,stellar_lifetime_years,structure_growth_possible,life_window_score,civilization_potential_score,final_verdict
+dimensionless.alpha_scale,0.5,True,3.3995718160906536,10000000000.0,True,0.353455689265642,0.35345568926564197,stellar but chemically poor
+dimensionless.alpha_scale,0.8,True,8.702903849192074,10000000000.0,True,0.7153440192154601,0.71534401921546,civilization window plausible
+dimensionless.alpha_scale,1.0,True,13.598287264362614,10000000000.0,True,0.9997236589148026,0.9997236589148025,civilization window plausible
+dimensionless.alpha_scale,1.2,True,19.581533660682165,7607257743.127308,True,0.7609360522071634,0.7609360522071633,civilization window plausible
+dimensionless.alpha_scale,1.5,True,30.596146344815885,5443310539.518173,True,0.5444815165649748,0.5444815165649747,complex chemistry possible

@@ -95,7 +95,7 @@ class UniverseParams:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "UniverseParams":
+    def from_dict(cls, data: dict[str, Any]) -> UniverseParams:
         allowed = set(cls.__dataclass_fields__)
         unknown = sorted(set(data) - allowed)
         if unknown:
