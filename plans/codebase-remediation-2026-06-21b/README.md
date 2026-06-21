@@ -5,7 +5,7 @@
 
 | 字段 | 值 |
 |---|---|
-| 状态 | `in-progress`（Phase A/B 已实现；C/D 待办） |
+| 状态 | `in-progress`（Phase A/B/C 已实现；D 待办） |
 | 基线提交 | `2ab9917708b2ba1574301d48196743c4771a2282` |
 | 评估报告 | [2026-06-21b-codebase-assessment.md](../../docs/reviews/2026-06-21b-codebase-assessment.md) |
 | Findings | P1×3、P2×4、P3×3 |
@@ -37,6 +37,9 @@
   0.9233`；逐阈值单因素敏感性可通过 `threshold_sensitivity()` 复算；Hypothesis
   覆盖单位往返、平直密度预算、引力/恒星寿命单调性、电磁/氢原子单调性。阶段门禁：
   `112 passed`、总覆盖率 `95.61%`、PatchGate `100%`、CLI `94.32%`。
+- Phase C：`QE-2026-104/105/106/108`。assess 缓存按 theory/version/rounded-vector
+  隔离；novelty 归档有容量、按代衰减并去重；scheme 子包/entry point 自动发现；
+  PatchGate 使用可注入冲突策略；evolve 报告收敛指标并支持显式早停，默认行为不变。
 
 ## 实现后流程
 

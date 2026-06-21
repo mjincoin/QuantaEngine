@@ -23,7 +23,7 @@ cosmogenesis/
       __init__.py   方案名 SCHEME_NAME、元数据、导出 Engine 类
       engine.py     物理：assess(ParameterVector) -> UniverseAssessment（对抗式 I/O）
       optimizer.py  迭代优化路径：optimize(start, budget) -> ParameterVector
-    __init__.py   SCHEME_REGISTRY：方案名 -> Engine 类；build_scheme(name) / list_schemes()
+    __init__.py   自动发现子包与 quanta_engine.schemes entry point；build_scheme/list_schemes
 
   arena/       并行对抗平台（裁决、对决、演化），消费 schemes，不含物理
     cards.py        结构化 Challenge/Defense/Judge/Patch（pydantic, schema 校验）
@@ -64,8 +64,9 @@ cosmogenesis/
 ## 增加一个新方案的标准步骤
 
 1. 新建 `cosmogenesis/schemes/<new_name>/`，实现 `engine.py`(assess) 与 `optimizer.py`(optimize)，在子包 `__init__.py` 设 `SCHEME_NAME`。
-2. 在 `cosmogenesis/schemes/__init__.py` 的 `SCHEME_REGISTRY` 注册。
+2. 子包导出唯一的 `BaseEngine` 子类与 `METADATA`；内置子包会自动发现。仓库外插件可发布
+   `quanta_engine.schemes` entry point，值为该 `BaseEngine` 子类。
 3. 新建 `theories/T-NNNN_<family>/theory.yaml`，`engine: <new_name>`。
 4. 跑 `genesis-arena evolve`，它自动并入对抗与 Pareto 生态。
 
-无需改动 arena 任何代码——这是「长期多方案并行不混乱」的关键。
+无需改中心注册表或 arena 代码——这是「长期多方案并行不混乱」的关键。

@@ -4,7 +4,9 @@ untouched -- but NEVER merges two theories, and always preserves the parent."""
 from __future__ import annotations
 
 import json
+from enum import StrEnum
 from pathlib import Path
+from typing import Protocol
 
 import numpy as np
 
@@ -15,16 +17,47 @@ from .registry import TheoryRegistry
 from .theory import TheorySpec
 
 
+class ConflictAction(StrEnum):
+    PATCH = "patch"
+    FORK = "fork"
+    INVALIDATE = "invalidate"
+    UNCHANGED = "unchanged"
+
+
+class ConflictStrategy(Protocol):
+    """Policy object that maps one judged conflict to a local lineage action."""
+
+    def choose(
+        self, target: TheorySpec, challenge: ChallengeCard, judge: JudgeResult
+    ) -> ConflictAction: ...
+
+
+class DefaultConflictStrategy:
+    def choose(
+        self, target: TheorySpec, challenge: ChallengeCard, judge: JudgeResult
+    ) -> ConflictAction:
+        del challenge
+        if judge.decision == JudgeDecision.PATCH_REQUIRED and target.lineage_policy.allow_patch:
+            return ConflictAction.PATCH
+        if judge.decision == JudgeDecision.FORK_RECOMMENDED and target.lineage_policy.allow_fork:
+            return ConflictAction.FORK
+        if judge.decision == JudgeDecision.THEORY_INVALIDATED:
+            return ConflictAction.INVALIDATE
+        return ConflictAction.UNCHANGED
+
+
 class PatchGate:
     def __init__(
         self,
         registry: TheoryRegistry,
         history_dir: str | Path | None = None,
         run_seed: int = 0,
+        conflict_strategy: ConflictStrategy | None = None,
     ) -> None:
         self.registry = registry
         self.history_dir = Path(history_dir) if history_dir else None
         self.run_seed = run_seed
+        self.conflict_strategy = conflict_strategy or DefaultConflictStrategy()
 
     def process(
         self,
@@ -36,17 +69,12 @@ class PatchGate:
         events: list[PatchEvent] = []
 
         for challenge, judge in decisions:
-            if (
-                judge.decision == JudgeDecision.PATCH_REQUIRED
-                and current.lineage_policy.allow_patch
-            ):
+            action = self.conflict_strategy.choose(current, challenge, judge)
+            if action == ConflictAction.PATCH:
                 current, event = self._patch(current, challenge)
-            elif (
-                judge.decision == JudgeDecision.FORK_RECOMMENDED
-                and current.lineage_policy.allow_fork
-            ):
+            elif action == ConflictAction.FORK:
                 event = self._fork(current, challenge)
-            elif judge.decision == JudgeDecision.THEORY_INVALIDATED:
+            elif action == ConflictAction.INVALIDATE:
                 event = PatchEvent(
                     theory_id=current.theory_id,
                     based_on_challenge_id=challenge.challenge_id,

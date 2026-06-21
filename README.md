@@ -93,12 +93,14 @@ winner**. It has three clearly separated layers (see
   `ChallengeCard`s, **defend** per their `DefensePrior`, are judged by a
   deterministic **Verifier + Judge**, and are **patched / forked / left unchanged**
   by a `PatchGate` that preserves parents and **forbids merging**. Selection keeps a
-  **Pareto front + family elites + novelty archive**, and duels/evolution run **in parallel**.
+  **Pareto front + family elites + bounded, generation-decayed novelty archive**, and
+  duels/evolution run **in parallel** with optional convergence-based early stopping.
 
 A **scheme** is a method library; a **theory** is a named, versioned lineage that
 uses a scheme plus a config and keeps its own `history`. Adding a scheme means
-dropping a subpackage in `cosmogenesis/schemes/` and registering it — no arena
-code changes.
+dropping a self-describing subpackage in `cosmogenesis/schemes/` (or installing a
+`quanta_engine.schemes` entry point); discovery is automatic and needs no central
+registry or arena edit.
 
 ```bash
 python -m cosmogenesis theory-list

@@ -104,19 +104,25 @@ reviews:
         regression: tests/test_remediation_b.py::test_standard_universe_within_calibrated_ranges
       - id: QE-2026-104
         severity: P2
-        status: open
+        status: fixed
         category: performance
         independent: true
+        implemented_phase: C
+        regression: tests/test_remediation_b.py::test_assess_memoized_and_deterministic
       - id: QE-2026-105
         severity: P2
-        status: open
+        status: fixed
         category: scaling
         independent: true
+        implemented_phase: C
+        regression: tests/test_remediation_b.py::test_novelty_archive_bounded_no_collapse
       - id: QE-2026-106
         severity: P2
-        status: open
+        status: fixed
         category: extensibility
         references: [remediation-2026-06-21-s7.2]
+        implemented_phase: C
+        regression: tests/test_remediation_b.py::test_new_scheme_discovered_without_central_edit
       - id: QE-2026-107
         severity: P2
         status: open
@@ -124,9 +130,11 @@ reviews:
         references: [remediation-2026-06-21-s6, remediation-2026-06-21-s7.3]
       - id: QE-2026-108
         severity: P3
-        status: open
+        status: fixed
         category: loop-control
         independent: true
+        implemented_phase: C
+        regression: tests/test_remediation_b.py::test_evolution_early_stops_on_stable_ecosystem
       - id: QE-2026-109
         severity: P3
         status: open

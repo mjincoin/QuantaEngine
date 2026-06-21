@@ -98,3 +98,21 @@
   宇宙的氢、Bohr 半径、年龄与三方案分数锚点。
 - Phase B 完整门禁：`112 passed`；Ruff lint/format、Mypy 全绿；总覆盖率 `95.61%`，
   `patchgate.py` `100%`，`cosmogenesis/cli.py` `94.32%`。
+
+## Phase C 实施记录
+
+- `QE-2026-104`：`bridge.assess` 使用线程安全、LRU 有界缓存，键为
+  `(theory_id, version, rounded-vector)`，缓存值深拷贝防止调用方污染。一次完整
+  `score_theory` 实测 `17 misses / 4 hits`；重复评分全部复用已有键，版本提升强制 miss。
+- `QE-2026-105`：`NoveltyArchive` 默认容量 `128`，按确定性 generation 过期（默认 8 代）
+  并按圆整特征去重；禁止 wall-clock 进入结果。30 代回归中容量始终不超 8，3 代窗口
+  最终仅保留 4 项，末 10 代 novelty 均大于 0。
+- `QE-2026-106`：内置 scheme 由 `pkgutil` 自动发现；外部插件使用
+  `quanta_engine.schemes` entry point。`PatchGate` 的决策映射抽为可注入
+  `ConflictStrategy`，默认策略保持 patch/fork/invalidate/unchanged 既有语义与 no-merge
+  不变量。
+- `QE-2026-108`：每代记录 Pareto、family 与最大 display-score 增量稳定性；显式
+  `early_stopping=True` 后按 patience 早停。稳定场景从请求 10 代缩短至 2 代；
+  `early_stopping=False` 的默认路径仍完成全部请求代数。
+- Phase C 完整门禁：`118 passed`；Ruff lint/format、Mypy 全绿；总覆盖率 `95.29%`，
+  `patchgate.py` `100%`，`cosmogenesis/cli.py` `94.32%`。

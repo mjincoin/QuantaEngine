@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import math
+from collections import OrderedDict
+from dataclasses import dataclass
 
 import numpy as np
 from pydantic import BaseModel, Field
@@ -22,6 +24,63 @@ OBJECTIVES = (
     "simplicity",
     "computational_efficiency",
 )
+
+
+@dataclass(frozen=True, slots=True)
+class _NoveltyEntry:
+    features: tuple[float, ...]
+    generation: int
+
+
+class NoveltyArchive:
+    """Bounded, generation-decayed, feature-deduplicated novelty memory.
+
+    Time is the deterministic generation counter -- never wall-clock time. Re-adding
+    the same rounded behavior refreshes its generation instead of growing storage.
+    """
+
+    def __init__(
+        self,
+        capacity: int = 128,
+        max_age_generations: int = 8,
+        dedup_decimals: int = 8,
+    ) -> None:
+        if capacity < 1:
+            raise ValueError("novelty archive capacity must be positive")
+        if max_age_generations < 0:
+            raise ValueError("novelty archive age must be non-negative")
+        self.capacity = capacity
+        self.max_age_generations = max_age_generations
+        self.dedup_decimals = dedup_decimals
+        self._entries: OrderedDict[tuple[float, ...], _NoveltyEntry] = OrderedDict()
+
+    def _key(self, features: list[float]) -> tuple[float, ...]:
+        return tuple(round(float(value), self.dedup_decimals) for value in features)
+
+    def _prune(self, generation: int) -> None:
+        expired = [
+            key
+            for key, entry in self._entries.items()
+            if generation - entry.generation > self.max_age_generations
+        ]
+        for key in expired:
+            del self._entries[key]
+        while len(self._entries) > self.capacity:
+            self._entries.popitem(last=False)
+
+    def add(self, features: list[float], generation: int) -> None:
+        self._prune(generation)
+        key = self._key(features)
+        self._entries[key] = _NoveltyEntry(tuple(float(v) for v in features), generation)
+        self._entries.move_to_end(key)
+        self._prune(generation)
+
+    def features(self, generation: int) -> list[list[float]]:
+        self._prune(generation)
+        return [list(entry.features) for entry in self._entries.values()]
+
+    def __len__(self) -> int:
+        return len(self._entries)
 
 
 class TheoryScoreVector(BaseModel):

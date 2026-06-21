@@ -13,7 +13,17 @@ import math
 
 import pytest
 
+from cosmogenesis import schemes
 from cosmogenesis.arena import bridge, scoring
+from cosmogenesis.arena.cards import (
+    ChallengeCard,
+    ChallengeType,
+    JudgeDecision,
+    JudgeResult,
+    Severity,
+)
+from cosmogenesis.arena.evolution import evolve
+from cosmogenesis.arena.patchgate import ConflictAction, PatchGate
 from cosmogenesis.arena.registry import TheoryRegistry
 from cosmogenesis.core import ParameterVector
 from cosmogenesis.schemes import build_scheme
@@ -139,3 +149,133 @@ def test_standard_universe_within_calibrated_ranges(cfg):
             assert math.isfinite(evidence["score_low"])
             assert math.isfinite(evidence["score_high"])
             assert evidence["max_abs_score_delta"] >= 0.0, threshold
+
+
+# ---------------- QE-2026-104: deterministic assess memoization ----------------
+def test_assess_memoized_and_deterministic(registry, monkeypatch):
+    bridge.clear_assess_cache()
+    original = bridge.build_engine
+    calls = 0
+
+    def counted(theory):
+        nonlocal calls
+        calls += 1
+        return original(theory)
+
+    monkeypatch.setattr(bridge, "build_engine", counted)
+    theory = registry.get("T-0001")
+    vector = ParameterVector.default()
+    first = bridge.assess(theory, vector)
+    # Below the documented rounding precision: same physical cache key.
+    near = ParameterVector([vector.values[0] + 1.0e-13, *vector.values[1:]])
+    second = bridge.assess(theory, near)
+    assert first.to_dict() == second.to_dict()
+    assert calls == 1
+    # A new theory version must never reuse the old assessment.
+    bridge.assess(theory.model_copy(update={"version": theory.bump_patch()}), vector)
+    assert calls == 2
+
+
+# ---------------- QE-2026-105: bounded/decayed novelty archive ----------------
+def test_novelty_archive_bounded_no_collapse():
+    archive = scoring.NoveltyArchive(capacity=8, max_age_generations=3, dedup_decimals=6)
+    scores = []
+    for generation in range(30):
+        features = [float(generation), float(generation % 5), 0.5]
+        scores.append(scoring.novelty_score(features, archive.features(generation)))
+        archive.add(features, generation)
+        archive.add(features, generation)  # duplicate refreshes; it does not grow the archive
+        assert len(archive) <= 8
+    assert len(archive) <= 4  # generational expiry is tighter than capacity here
+    assert min(scores[-10:]) > 0.0
+
+
+# ---------------- QE-2026-106: drop-in schemes + conflict strategy ----------------
+def test_new_scheme_discovered_without_central_edit(cfg, tmp_path, monkeypatch):
+    package_root = tmp_path / "schemes"
+    package = package_root / "drop_in_test"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text(
+        "from cosmogenesis.core import BaseEngine, UniverseAssessment\n"
+        "class DropInTest(BaseEngine):\n"
+        "    name = 'drop_in_test'\n"
+        "    def assess(self, vector):\n"
+        "        return UniverseAssessment(self.name, 0.5, True)\n"
+        "    def optimize(self, start, budget):\n"
+        "        return start\n"
+        "METADATA = {'name': 'drop_in_test', 'paradigm': 'test', 'optimizer': 'none'}\n"
+    )
+    original_paths = list(schemes.__path__)
+    monkeypatch.setattr(schemes, "__path__", [*original_paths, str(package_root)])
+    schemes.refresh_scheme_registry()
+    try:
+        assert "drop_in_test" in schemes.list_schemes()
+        assert schemes.build_scheme("drop_in_test", cfg).name == "drop_in_test"
+    finally:
+        monkeypatch.setattr(schemes, "__path__", original_paths)
+        schemes.refresh_scheme_registry()
+
+
+def test_patchgate_uses_injected_conflict_strategy(registry):
+    class KeepUnchanged:
+        def choose(self, target, challenge, judge):
+            return ConflictAction.UNCHANGED
+
+    target = registry.get("T-0001")
+    challenge = ChallengeCard(
+        challenge_id="CH-strategy",
+        source_theory_id="T-0002",
+        target_theory_id=target.theory_id,
+        challenge_type=ChallengeType.REPRODUCIBLE_COUNTEREXAMPLE,
+        severity=Severity.MAJOR,
+        summary="strategy injection",
+    )
+    judge = JudgeResult(
+        judge_result_id="J-strategy",
+        challenge_id=challenge.challenge_id,
+        target_theory_id=target.theory_id,
+        decision=JudgeDecision.PATCH_REQUIRED,
+        severity=Severity.MAJOR,
+        rationale="would normally patch",
+        patch_required=True,
+    )
+    _, events = PatchGate(registry, conflict_strategy=KeepUnchanged()).process(
+        target, [(challenge, judge)]
+    )
+    assert events[0].outcome.value == "unchanged"
+
+
+# ---------------- QE-2026-108: convergence metrics + opt-in early stop ----------------
+def test_evolution_early_stops_on_stable_ecosystem(registry, tmp_path):
+    report = evolve(
+        registry.all(),
+        registry,
+        generations=10,
+        rounds=0,
+        optimize_budget=1,
+        parallel=False,
+        out_dir=tmp_path,
+        early_stopping=True,
+        convergence_patience=1,
+        score_delta_tolerance=1.0,
+    )
+    assert report.stopped_early is True
+    assert report.completed_generations < report.requested_generations
+    assert report.convergence_reason == "stable_pareto_scores_and_families"
+    assert report.convergence_metrics[-1].stable is True
+
+
+def test_evolution_early_stopping_is_opt_in(registry):
+    report = evolve(
+        registry.all(),
+        registry,
+        generations=3,
+        rounds=0,
+        optimize_budget=1,
+        parallel=False,
+        early_stopping=False,
+        convergence_patience=1,
+        score_delta_tolerance=1.0,
+    )
+    assert report.completed_generations == 3
+    assert report.stopped_early is False
