@@ -159,6 +159,8 @@ adversarial stacks. New work should use `quanta_engine` and `cosmogenesis`.
 
 Every physical layer exposes assumptions, warnings, and intermediate values. See [docs/physics_assumptions.md](docs/physics_assumptions.md) for calibrated formulas and limitations, [docs/examples.md](docs/examples.md) for the acceptance scenarios, [docs/MVP_COMPLETION.md](docs/MVP_COMPLETION.md) for the stage-by-stage verification matrix, and [plans/quantaengine-mvp-v1/README.md](plans/quantaengine-mvp-v1/README.md) for the reusable execution package.
 
+Codebase assessments and remediation tracking are archived under [docs/reviews/](docs/reviews/README.md).
+
 ## Development
 
 ```bash
