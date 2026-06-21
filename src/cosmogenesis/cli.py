@@ -99,17 +99,30 @@ def evolve_cmd(
     population_size: Annotated[int, typer.Option("--population-size")] = 12,
     out: Annotated[Path | None, typer.Option("--out")] = None,
     no_merge: Annotated[bool, typer.Option("--no-merge/--allow-merge")] = True,
+    record: Annotated[
+        bool, typer.Option("--record/--no-record", help="Append per-lineage history.jsonl.")
+    ] = True,
+    persist_forks: Annotated[
+        bool, typer.Option("--persist-forks", help="Also write theory.yaml for new forks.")
+    ] = False,
 ) -> None:
     assert no_merge, "merging is not supported by design"
     reg = _registry()
     report = evolve(
         reg.all(), reg, generations=generations, rounds=rounds, min_families=min_families,
         elites_per_family=elites_per_family, population_size=population_size, out_dir=out,
+        lineage_root=(_THEORIES_DIR if record else None),
+        plan_dir=("plans/iterations" if record else None),
+        persist_forks=persist_forks,
     )
     console.print(f"allow_merge: {report.allow_merge}")
     console.print(f"Final families ({len(report.final_families)}): {', '.join(report.final_families)}")
     console.print(f"Final theories: {', '.join(report.final_theory_ids)}")
     console.print(f"Novelty archive: {', '.join(report.archive_ids) or '(none)'}")
+    if report.iteration_plan:
+        console.print(f"Next-iteration plan: {report.iteration_plan}")
+    if record:
+        console.print(f"Lineage history appended under: {_THEORIES_DIR}/T-*/history.jsonl")
     if out is not None:
         console.print(f"Artifacts: {out.resolve()}")
 

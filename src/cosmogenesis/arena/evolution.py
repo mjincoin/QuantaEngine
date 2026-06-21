@@ -9,6 +9,7 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 
 from . import bridge, scoring
+from .ledger import append_history, write_iteration_plan
 from .registry import TheoryRegistry
 from .theory import TheorySpec
 from .tournament import TournamentReport, run_tournament
@@ -28,6 +29,7 @@ class EvolutionReport(BaseModel):
     final_theory_ids: list[str] = Field(default_factory=list)
     final_families: list[str] = Field(default_factory=list)
     archive_ids: list[str] = Field(default_factory=list)
+    iteration_plan: str | None = None  # path to the auto-generated next-iteration plan
     allow_merge: bool = False  # invariant
 
 
@@ -98,10 +100,23 @@ def evolve(
     optimize_budget: int = 60,
     out_dir: str | Path | None = None,
     parallel: bool = True,
+    lineage_root: str | Path | None = None,
+    plan_dir: str | Path | None = None,
+    persist_forks: bool = False,
 ) -> EvolutionReport:
+    """Evolve the population.
+
+    ``lineage_root`` (e.g. ``"theories"``): if set, append each generation's result
+    to ``<root>/T-NNNN_<family>/history.jsonl`` (durable, git-tracked).
+    ``plan_dir`` (e.g. ``"plans/iterations"``): if set, write an auto-generated
+    next-iteration optimization plan there. Both default to None so library/test
+    calls never touch the repo; the CLI turns them on.
+    """
+
     report = EvolutionReport()
     current = list(theories)
     archive: dict[str, TheorySpec] = {}
+    last_scores: list = []
 
     for g in range(generations):
         # 1. parallel: each theory independently optimizes its own seed.
@@ -114,16 +129,32 @@ def evolve(
             registry.add(t)
 
         # 2. tournament (also runs duels -> may add forks/patches to registry).
+        # Durable history goes to theories/ via the ledger below, so we do not write
+        # the redundant ephemeral per-event log here.
         tour: TournamentReport = run_tournament(
-            current, registry, rounds=rounds, generation=g,
-            history_dir=(str(Path(out_dir) / "history") if out_dir else None),
-            parallel=parallel,
+            current, registry, rounds=rounds, generation=g, parallel=parallel,
         )
+
+        last_scores = tour.scores
 
         # 3. archive valid + novel theories.
         for s in tour.scores:
             if s.validity >= 1.0 and s.novelty >= 0.5:
                 archive[s.theory_id] = registry.get(s.theory_id)
+
+        # 3b. durable per-lineage history (git-tracked) when requested.
+        if lineage_root is not None:
+            events_by_theory: dict[str, list] = {}
+            for duel in tour.duels:
+                for rd in duel.rounds:
+                    for ev in rd.patch_events:
+                        events_by_theory.setdefault(ev.theory_id, []).append(ev)
+            for s in tour.scores:
+                append_history(
+                    registry.get(s.theory_id), g, s,
+                    events_by_theory.get(s.theory_id, []),
+                    root=lineage_root, persist_spec=persist_forks,
+                )
 
         # 4. anti-collapse selection of next generation.
         all_current = registry.all()
@@ -150,6 +181,14 @@ def evolve(
     report.final_theory_ids = [t.theory_id for t in current]
     report.final_families = sorted({t.family for t in current})
     report.archive_ids = list(archive)
+
+    if plan_dir is not None and report.generations:
+        report.iteration_plan = str(
+            write_iteration_plan(
+                last_scores, registry, report.generations[-1].pareto_front,
+                plan_dir, report.generations[-1].generation,
+            )
+        )
 
     if out_dir is not None:
         _write(report, Path(out_dir))

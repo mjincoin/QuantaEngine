@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
 from cosmogenesis.arena import bridge as engines
@@ -192,3 +195,44 @@ def test_evolution_parallel_no_collapse(registry, tmp_path):
         assert root in registry  # original lineages preserved
     assert (tmp_path / "evolution_report.json").exists()
     assert (tmp_path / "evolution_report.md").exists()
+
+
+def test_evolution_default_does_not_touch_repo(tmp_path):
+    """Without lineage_root/plan_dir, evolve must not write any durable history."""
+    import shutil
+
+    src = tmp_path / "theories"
+    shutil.copytree("theories", src)
+    for h in src.rglob("history.jsonl"):
+        h.unlink()  # start from a clean copy
+    reg = TheoryRegistry.from_dir(str(src))
+    evolve(reg.all(), reg, generations=1, min_families=3, population_size=8)
+    assert not list(src.rglob("history.jsonl"))  # nothing written by default
+
+
+def test_ledger_persists_history_and_plan(tmp_path):
+    """With lineage_root + plan_dir, each lineage accrues history and a plan is made."""
+    import shutil
+
+    src = tmp_path / "theories"
+    plans = tmp_path / "plans_iter"
+    shutil.copytree("theories", src)
+    for h in src.rglob("history.jsonl"):
+        h.unlink()  # start from a clean copy so record counts are deterministic
+    reg = TheoryRegistry.from_dir(str(src))
+    rep = evolve(
+        reg.all(), reg, generations=2, min_families=3, population_size=8,
+        lineage_root=str(src), plan_dir=str(plans), persist_forks=True,
+    )
+    # per-lineage history.jsonl with 2 generation records for each seed lineage
+    for tid in ("T-0001", "T-0002", "T-0003"):
+        hist = list(src.glob(f"{tid}_*/history.jsonl"))
+        assert hist, f"missing history for {tid}"
+        records = [json.loads(line) for line in hist[0].read_text().splitlines()]
+        assert len(records) == 2
+        assert records[0]["theory_id"] == tid
+        assert "scores" in records[0] and "timestamp" in records[0]
+    # an auto-generated next-iteration plan exists
+    assert rep.iteration_plan is not None
+    plan = Path(rep.iteration_plan)
+    assert plan.exists() and "Next-iteration optimization plan" in plan.read_text()

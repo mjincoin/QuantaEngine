@@ -8,14 +8,14 @@
 ## Generation 0
 - families (4): conservative_eft, exploratory_generative, exploratory_generative_explore, minimal_axiom
 - Pareto front: T-0001, T-0003, T-0004
-- display ranking: T-0003=0.8491, T-0001=0.7896, T-0002=0.5545, T-0004=0.152
+- display ranking: T-0003=0.8268, T-0001=0.7776, T-0002=0.5425, T-0004=0.1056
 
 ## Generation 1
 - families (4): conservative_eft, exploratory_generative, exploratory_generative_explore, minimal_axiom
 - Pareto front: T-0001, T-0003
-- display ranking: T-0003=0.8558, T-0001=0.7896, T-0002=0.5545, T-0004=0.2603
+- display ranking: T-0003=0.8519, T-0001=0.791, T-0002=0.5559, T-0004=0.1744
 
 ## Generation 2
 - families (4): conservative_eft, exploratory_generative, exploratory_generative_explore, minimal_axiom
 - Pareto front: T-0001, T-0003, T-0004
-- display ranking: T-0003=0.8506, T-0001=0.7905, T-0002=0.5554, T-0004=0.2934
+- display ranking: T-0003=0.8534, T-0001=0.7921, T-0002=0.5571, T-0004=0.2869

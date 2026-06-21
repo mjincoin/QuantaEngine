@@ -49,6 +49,18 @@ cosmogenesis/
 > 一句话：scheme 是「方法库」，theory 是「用该方法跑出的、带身份与历史的长期谱系」。
 > 多个 theory 可共用同一 scheme（不同配置/血统），多个 scheme 永远并行存在、永不合并。
 
+## 长期存储：对抗结果与迭代计划存在哪里
+
+| 内容 | 位置 | 是否入 git | 写入者 |
+|---|---|---|---|
+| 每条谱系的逐代对抗历史 | `theories/T-NNNN_<family>/history.jsonl`（append-only，每行一代：时间戳[巴黎时区]、版本、冠军参数、各目标分、patch/fork 事件） | 是（长期累积、可 diff） | `arena/ledger.py` |
+| 自动生成的下一轮迭代优化计划 | `plans/iterations/<时间戳>_genN.md`（每代弱项 + 推荐动作 + Pareto 快照） | 是 | `arena/ledger.py` |
+| 最近一次运行的可读快照 | `reports/arena/evolution_report.{md,json}`（每次覆盖，演示用） | 是 | `arena/evolution.py` |
+| 临时/草稿输出 | `runs/`、`outputs/` | 否（gitignore） | — |
+
+- 复用既有目录（`theories/`、`plans/`、`reports/`），**不新增空目录**。
+- `evolve()` 默认 `lineage_root=None`/`plan_dir=None`（库与测试调用不碰仓库）；CLI `cosmogenesis evolve` 默认开启（`--no-record` 关闭，`--persist-forks` 连同新 fork 的 theory.yaml 一并落盘成为正式谱系）。
+
 ## 增加一个新方案的标准步骤
 
 1. 新建 `cosmogenesis/schemes/<new_name>/`，实现 `engine.py`(assess) 与 `optimizer.py`(optimize)，在子包 `__init__.py` 设 `SCHEME_NAME`。
