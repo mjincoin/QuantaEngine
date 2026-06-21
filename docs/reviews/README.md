@@ -26,9 +26,9 @@
 | Review ID | 日期 | 基线提交 | 状态 | P1 | P2 | 报告 |
 |---|---|---|---|---:|---:|---|
 | `QE-REVIEW-2026-06-21` | 2026-06-21 | `6050e48` | verified | 5 | 3 | [原评估](2026-06-21-codebase-assessment.md) / [修复复审](2026-06-21-codebase-remediation.md) |
-| `QE-REVIEW-2026-06-21B` | 2026-06-21 | `2ab9917` | verified | 3 | 4 | [独立评估](2026-06-21b-codebase-assessment.md) / [修复复审](2026-06-21b-codebase-remediation.md) |
+| `QE-REVIEW-2026-06-21B` | 2026-06-21 | `2ab9917` | verified | 3 | 4 | [独立评估](2026-06-21b-codebase-assessment.md) / [修复复审](2026-06-21b-codebase-remediation.md) / [执行质量审计](2026-06-21b-execution-quality-audit.md) |
 
-> `QE-REVIEW-2026-06-21B` 为**独立评估**：先基于精读独立得出问题（多数为全新发现），再与前轮交叉标注关系；聚焦对抗回路可信度、评分目标可信度与物理校准。
+> `QE-REVIEW-2026-06-21B` 为**独立评估**：先基于精读独立得出问题（多数为全新发现），再与前轮交叉标注关系；聚焦对抗回路可信度、评分目标可信度与物理校准。其修复实现另经独立**执行质量审计**（重跑 9 道验收门禁、逐 finding 比对设计意图）：结论**通过（高质量）**，并补强了物理校准敏感性证据。
 
 机器可读索引见 [index.yaml](index.yaml)。
 

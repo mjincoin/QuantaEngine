@@ -152,6 +152,21 @@ def test_standard_universe_within_calibrated_ranges(cfg):
             assert evidence["max_abs_score_delta"] >= 0.0, threshold
 
 
+def test_calibration_sensitivity_is_nonvacuous(cfg):
+    """The calibration/uncertainty framework must actually detect threshold effects,
+    not be a vacuous wrapper. variational/minimal show non-zero sensitivity already at
+    the standard anchor; analytic's single config-overridable threshold is dormant at
+    the robustly-feasible standard universe but becomes strongly sensitive near its
+    window boundary (a short-lived-star, strong-gravity universe)."""
+    for name in ("variational_relaxer", "minimal_axiom"):
+        report = build_scheme(name, cfg).threshold_sensitivity(ParameterVector.default())
+        assert max(e["max_abs_score_delta"] for e in report["thresholds"].values()) > 0.0
+
+    near_boundary = ParameterVector([1.0, 3.0, 1.0, 1.0, -8.68])  # strong gravity -> short stars
+    report = build_scheme("analytic_compiler", cfg).threshold_sensitivity(near_boundary)
+    assert report["thresholds"]["stellar_min_lifetime_years"]["max_abs_score_delta"] > 0.05
+
+
 # ---------------- QE-2026-104: deterministic assess memoization ----------------
 def test_assess_memoized_and_deterministic(registry, monkeypatch):
     bridge.clear_assess_cache()

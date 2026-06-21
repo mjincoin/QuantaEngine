@@ -1,8 +1,8 @@
 {
   "plan_id": "codebase-remediation-2026-06-21b",
   "status": "passed",
-  "generated_at": "2026-06-21T14:03:35+02:00",
-  "revision": "6772b3851f4a8d0adcc867d18fbd43b0f9758342",
+  "generated_at": "2026-06-21T14:16:58+02:00",
+  "revision": "7c179ed9e779ab0c4ce52195339395380607688d",
   "python": "3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)]",
   "checks": [
     {
@@ -16,7 +16,7 @@
         "-q"
       ],
       "returncode": 0,
-      "duration_seconds": 1.855,
+      "duration_seconds": 1.806,
       "status": "passed",
       "output_tail": "......................                                                   [100%]"
     },
@@ -27,9 +27,9 @@
         "plans/codebase-remediation-2026-06-21/execution/check_coverage.py"
       ],
       "returncode": 0,
-      "duration_seconds": 7.264,
+      "duration_seconds": 7.104,
       "status": "passed",
-      "output_tail": "........................................................................ [ 60%]\n...............................................                          [100%]\n=============================== tests coverage ================================\n_______________ coverage: platform win32, python 3.14.5-final-0 _______________\n\nCoverage JSON written to file C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-coverage-4mtlfzew\\coverage.json\n[PASS] total: 95.29% (minimum 90.00%)\n[PASS] src/cosmogenesis/arena/patchgate.py: 100.00% (minimum 85.00%)\n[PASS] src/cosmogenesis/cli.py: 94.32% (minimum 85.00%)"
+      "output_tail": "........................................................................ [ 60%]\n...............................................                          [100%]\n=============================== tests coverage ================================\n_______________ coverage: platform win32, python 3.14.5-final-0 _______________\n\nCoverage JSON written to file C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-coverage-cyi86g1z\\coverage.json\n[PASS] total: 95.29% (minimum 90.00%)\n[PASS] src/cosmogenesis/arena/patchgate.py: 100.00% (minimum 85.00%)\n[PASS] src/cosmogenesis/cli.py: 94.32% (minimum 85.00%)"
     },
     {
       "id": "full-tests",
@@ -39,9 +39,9 @@
         "pytest"
       ],
       "returncode": 0,
-      "duration_seconds": 6.332,
+      "duration_seconds": 6.437,
       "status": "passed",
-      "output_tail": "........................................................................ [ 60%]\n...............................................                          [100%]\n119 passed in 5.82s"
+      "output_tail": "........................................................................ [ 60%]\n...............................................                          [100%]\n119 passed in 5.93s"
     },
     {
       "id": "lint",
@@ -58,7 +58,7 @@
         "plans/codebase-remediation-2026-06-21b/execution"
       ],
       "returncode": 0,
-      "duration_seconds": 0.057,
+      "duration_seconds": 0.053,
       "status": "passed",
       "output_tail": "All checks passed!"
     },
@@ -78,7 +78,7 @@
         "plans/codebase-remediation-2026-06-21b/execution"
       ],
       "returncode": 0,
-      "duration_seconds": 0.05,
+      "duration_seconds": 0.053,
       "status": "passed",
       "output_tail": "125 files already formatted"
     },
@@ -91,7 +91,7 @@
         "src"
       ],
       "returncode": 0,
-      "duration_seconds": 0.233,
+      "duration_seconds": 0.237,
       "status": "passed",
       "output_tail": "Success: no issues found in 93 source files"
     },
@@ -104,7 +104,7 @@
         "check"
       ],
       "returncode": 0,
-      "duration_seconds": 1.871,
+      "duration_seconds": 1.862,
       "status": "passed",
       "output_tail": "No broken requirements found."
     },
@@ -116,15 +116,15 @@
         "build"
       ],
       "returncode": 0,
-      "duration_seconds": 6.437,
+      "duration_seconds": 6.472,
       "status": "passed",
-      "output_tail": "t-info\\WHEEL\ncreating 'D:\\\\05-universe\\\\01-quanta-engine\\\\quantaengine\\\\dist\\\\.tmp-4yh1i2sf\\\\quanta_engine-0.3.0-py3-none-any.whl' and adding 'build\\\\bdist.win-amd64\\\\wheel' to it\nadding 'cosmogenesis/__init__.py'\nadding 'cosmogenesis/__main__.py'\nadding 'cosmogenesis/cli.py'\nadding 'cosmogenesis/arena/__init__.py'\nadding 'cosmogenesis/arena/agents.py'\nadding 'cosmogenesis/arena/bridge.py'\nadding 'cosmogenesis/arena/cards.py'\nadding 'cosmogenesis/arena/duel.py'\nadding 'cosmogenesis/arena/evolution.py'\nadding 'cosmogenesis/arena/judge.py'\nadding 'cosmogenesis/arena/ledger.py'\nadding 'cosmogenesis/arena/patchgate.py'\nadding 'cosmogenesis/arena/registry.py'\nadding 'cosmogenesis/arena/scoring.py'\nadding 'cosmogenesis/arena/theory.py'\nadding 'cosmogenesis/arena/tournament.py'\nadding 'cosmogenesis/arena/verifier.py'\nadding 'cosmogenesis/core/__init__.py'\nadding 'cosmogenesis/core/assessment.py'\nadding 'cosmogenesis/core/parameters.py'\nadding 'cosmogenesis/core/protocol.py'\nadding 'cosmogenesis/core/reproducibility.py'\nadding 'cosmogenesis/schemes/__init__.py'\nadding 'cosmogenesis/schemes/analytic_compiler/__init__.py'\nadding 'cosmogenesis/schemes/analytic_compiler/engine.py'\nadding 'cosmogenesis/schemes/analytic_compiler/optimizer.py'\nadding 'cosmogenesis/schemes/minimal_axiom/__init__.py'\nadding 'cosmogenesis/schemes/minimal_axiom/engine.py'\nadding 'cosmogenesis/schemes/minimal_axiom/optimizer.py'\nadding 'cosmogenesis/schemes/variational_relaxer/__init__.py'\nadding 'cosmogenesis/schemes/variational_relaxer/engine.py'\nadding 'cosmogenesis/schemes/variational_relaxer/optimizer.py'\nadding 'quanta_engine/__init__.py'\nadding 'quanta_engine/__main__.py'\nadding 'quanta_engine/cli.py'\nadding 'quanta_engine/pipeline.py'\nadding 'quanta_engine/version.py'\nadding 'quanta_engine/atomic/__init__.py'\nadding 'quanta_engine/atomic/chemistry_window.py'\nadding 'quanta_engine/atomic/hydrogen.py'\nadding 'quanta_engine/complexity/__init__.py'\nadding 'quanta_engine/complexity/civilization.py'\nadding 'quanta_engine/complexity/habitability.py'\nadding 'quanta_engine/complexity/life_window.py'\nadding 'quanta_engine/core/__init__.py'\nadding 'quanta_engine/core/constants.py'\nadding 'quanta_engine/core/dimensions.py'\nadding 'quanta_engine/core/result.py'\nadding 'quanta_engine/core/schema.py'\nadding 'quanta_engine/core/units.py'\nadding 'quanta_engine/cosmology/__init__.py'\nadding 'quanta_engine/cosmology/friedmann.py'\nadding 'quanta_engine/cosmology/thermal_history.py'\nadding 'quanta_engine/experiments/__init__.py'\nadding 'quanta_engine/experiments/compare.py'\nadding 'quanta_engine/experiments/scan.py'\nadding 'quanta_engine/experiments/sensitivity.py'\nadding 'quanta_engine/fields/__init__.py'\nadding 'quanta_engine/fields/particles.py'\nadding 'quanta_engine/fields/spectrum.py'\nadding 'quanta_engine/nuclear/__init__.py'\nadding 'quanta_engine/nuclear/bbn.py'\nadding 'quanta_engine/nuclear/stability.py'\nadding 'quanta_engine/stars/__init__.py'\nadding 'quanta_engine/stars/fusion.py'\nadding 'quanta_engine/stars/lifetime.py'\nadding 'quanta_engine/stars/stellar_scaling.py'\nadding 'quanta_engine/structure/__init__.py'\nadding 'quanta_engine/structure/galaxies.py'\nadding 'quanta_engine/structure/halos.py'\nadding 'quanta_engine/structure/planets.py'\nadding 'quanta_engine/validation/__init__.py'\nadding 'quanta_engine/validation/conservation.py'\nadding 'quanta_engine/validation/dimensional.py'\nadding 'quanta_engine/validation/numerical.py'\nadding 'quanta_engine/validation/report.py'\nadding 'quanta_engine/validation/universe.py'\nadding 'quanta_engine-0.3.0.dist-info/licenses/LICENSE'\nadding 'quantaengine/__init__.py'\nadding 'quantaengine/__main__.py'\nadding 'quantaengine_lattice/__init__.py'\nadding 'quantaengine_lattice/__main__.py'\nadding 'quantaengine_lattice/analysis.py'\nadding 'quantaengine_lattice/chaos.py'\nadding 'quantaengine_lattice/cli.py'\nadding 'quantaengine_lattice/constants.py'\nadding 'quantaengine_lattice/cosmology.py'\nadding 'quantaengine_lattice/engine.py'\nadding 'quantaengine_lattice/fields.py'\nadding 'quantaengine_lattice/io.py'\nadding 'quantaengine_lattice/laws.py'\nadding 'quantaengine_lattice/params.py'\nadding 'quantaengine_lattice/spectrum.py'\nadding 'quantaengine_lattice/visualize.py'\nadding 'quanta_engine-0.3.0.dist-info/METADATA'\nadding 'quanta_engine-0.3.0.dist-info/WHEEL'\nadding 'quanta_engine-0.3.0.dist-info/entry_points.txt'\nadding 'quanta_engine-0.3.0.dist-info/top_level.txt'\nadding 'quanta_engine-0.3.0.dist-info/RECORD'\nremoving build\\bdist.win-amd64\\wheel\nSuccessfully built quanta_engine-0.3.0.tar.gz and quanta_engine-0.3.0-py3-none-any.whl\n\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - setuptools>=68\n  - wheel\n* Getting build dependencies for sdist...\n* Building sdist...\n* Building wheel from sdist\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - setuptools>=68\n  - wheel\n* Getting build dependencies for wheel...\n* Building wheel..."
+      "output_tail": "t-info\\WHEEL\ncreating 'D:\\\\05-universe\\\\01-quanta-engine\\\\quantaengine\\\\dist\\\\.tmp-g1wqhacq\\\\quanta_engine-0.3.0-py3-none-any.whl' and adding 'build\\\\bdist.win-amd64\\\\wheel' to it\nadding 'cosmogenesis/__init__.py'\nadding 'cosmogenesis/__main__.py'\nadding 'cosmogenesis/cli.py'\nadding 'cosmogenesis/arena/__init__.py'\nadding 'cosmogenesis/arena/agents.py'\nadding 'cosmogenesis/arena/bridge.py'\nadding 'cosmogenesis/arena/cards.py'\nadding 'cosmogenesis/arena/duel.py'\nadding 'cosmogenesis/arena/evolution.py'\nadding 'cosmogenesis/arena/judge.py'\nadding 'cosmogenesis/arena/ledger.py'\nadding 'cosmogenesis/arena/patchgate.py'\nadding 'cosmogenesis/arena/registry.py'\nadding 'cosmogenesis/arena/scoring.py'\nadding 'cosmogenesis/arena/theory.py'\nadding 'cosmogenesis/arena/tournament.py'\nadding 'cosmogenesis/arena/verifier.py'\nadding 'cosmogenesis/core/__init__.py'\nadding 'cosmogenesis/core/assessment.py'\nadding 'cosmogenesis/core/parameters.py'\nadding 'cosmogenesis/core/protocol.py'\nadding 'cosmogenesis/core/reproducibility.py'\nadding 'cosmogenesis/schemes/__init__.py'\nadding 'cosmogenesis/schemes/analytic_compiler/__init__.py'\nadding 'cosmogenesis/schemes/analytic_compiler/engine.py'\nadding 'cosmogenesis/schemes/analytic_compiler/optimizer.py'\nadding 'cosmogenesis/schemes/minimal_axiom/__init__.py'\nadding 'cosmogenesis/schemes/minimal_axiom/engine.py'\nadding 'cosmogenesis/schemes/minimal_axiom/optimizer.py'\nadding 'cosmogenesis/schemes/variational_relaxer/__init__.py'\nadding 'cosmogenesis/schemes/variational_relaxer/engine.py'\nadding 'cosmogenesis/schemes/variational_relaxer/optimizer.py'\nadding 'quanta_engine/__init__.py'\nadding 'quanta_engine/__main__.py'\nadding 'quanta_engine/cli.py'\nadding 'quanta_engine/pipeline.py'\nadding 'quanta_engine/version.py'\nadding 'quanta_engine/atomic/__init__.py'\nadding 'quanta_engine/atomic/chemistry_window.py'\nadding 'quanta_engine/atomic/hydrogen.py'\nadding 'quanta_engine/complexity/__init__.py'\nadding 'quanta_engine/complexity/civilization.py'\nadding 'quanta_engine/complexity/habitability.py'\nadding 'quanta_engine/complexity/life_window.py'\nadding 'quanta_engine/core/__init__.py'\nadding 'quanta_engine/core/constants.py'\nadding 'quanta_engine/core/dimensions.py'\nadding 'quanta_engine/core/result.py'\nadding 'quanta_engine/core/schema.py'\nadding 'quanta_engine/core/units.py'\nadding 'quanta_engine/cosmology/__init__.py'\nadding 'quanta_engine/cosmology/friedmann.py'\nadding 'quanta_engine/cosmology/thermal_history.py'\nadding 'quanta_engine/experiments/__init__.py'\nadding 'quanta_engine/experiments/compare.py'\nadding 'quanta_engine/experiments/scan.py'\nadding 'quanta_engine/experiments/sensitivity.py'\nadding 'quanta_engine/fields/__init__.py'\nadding 'quanta_engine/fields/particles.py'\nadding 'quanta_engine/fields/spectrum.py'\nadding 'quanta_engine/nuclear/__init__.py'\nadding 'quanta_engine/nuclear/bbn.py'\nadding 'quanta_engine/nuclear/stability.py'\nadding 'quanta_engine/stars/__init__.py'\nadding 'quanta_engine/stars/fusion.py'\nadding 'quanta_engine/stars/lifetime.py'\nadding 'quanta_engine/stars/stellar_scaling.py'\nadding 'quanta_engine/structure/__init__.py'\nadding 'quanta_engine/structure/galaxies.py'\nadding 'quanta_engine/structure/halos.py'\nadding 'quanta_engine/structure/planets.py'\nadding 'quanta_engine/validation/__init__.py'\nadding 'quanta_engine/validation/conservation.py'\nadding 'quanta_engine/validation/dimensional.py'\nadding 'quanta_engine/validation/numerical.py'\nadding 'quanta_engine/validation/report.py'\nadding 'quanta_engine/validation/universe.py'\nadding 'quanta_engine-0.3.0.dist-info/licenses/LICENSE'\nadding 'quantaengine/__init__.py'\nadding 'quantaengine/__main__.py'\nadding 'quantaengine_lattice/__init__.py'\nadding 'quantaengine_lattice/__main__.py'\nadding 'quantaengine_lattice/analysis.py'\nadding 'quantaengine_lattice/chaos.py'\nadding 'quantaengine_lattice/cli.py'\nadding 'quantaengine_lattice/constants.py'\nadding 'quantaengine_lattice/cosmology.py'\nadding 'quantaengine_lattice/engine.py'\nadding 'quantaengine_lattice/fields.py'\nadding 'quantaengine_lattice/io.py'\nadding 'quantaengine_lattice/laws.py'\nadding 'quantaengine_lattice/params.py'\nadding 'quantaengine_lattice/spectrum.py'\nadding 'quantaengine_lattice/visualize.py'\nadding 'quanta_engine-0.3.0.dist-info/METADATA'\nadding 'quanta_engine-0.3.0.dist-info/WHEEL'\nadding 'quanta_engine-0.3.0.dist-info/entry_points.txt'\nadding 'quanta_engine-0.3.0.dist-info/top_level.txt'\nadding 'quanta_engine-0.3.0.dist-info/RECORD'\nremoving build\\bdist.win-amd64\\wheel\nSuccessfully built quanta_engine-0.3.0.tar.gz and quanta_engine-0.3.0-py3-none-any.whl\n\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - setuptools>=68\n  - wheel\n* Getting build dependencies for sdist...\n* Building sdist...\n* Building wheel from sdist\n* Creating isolated environment: venv+pip...\n* Installing packages in isolated environment:\n  - setuptools>=68\n  - wheel\n* Getting build dependencies for wheel...\n* Building wheel..."
     },
     {
       "id": "wheel-smoke",
       "command": [
         [
-          "C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-dhfwh0g1\\venv\\Scripts\\python.exe",
+          "C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-7mzkwxn0\\venv\\Scripts\\python.exe",
           "-m",
           "pip",
           "install",
@@ -133,12 +133,12 @@
           "D:\\05-universe\\01-quanta-engine\\quantaengine\\dist\\quanta_engine-0.3.0-py3-none-any.whl"
         ],
         [
-          "C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-dhfwh0g1\\venv\\Scripts\\python.exe",
+          "C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-7mzkwxn0\\venv\\Scripts\\python.exe",
           "-c",
           "import cosmogenesis, quanta_engine, quantaengine_lattice; from cosmogenesis import list_schemes; assert cosmogenesis.__version__ == quanta_engine.__version__ == quantaengine_lattice.__version__ == '0.3.0'; assert set(list_schemes()) == {'analytic_compiler', 'variational_relaxer', 'minimal_axiom'}"
         ],
         [
-          "C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-dhfwh0g1\\venv\\Scripts\\python.exe",
+          "C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-7mzkwxn0\\venv\\Scripts\\python.exe",
           "-m",
           "cosmogenesis",
           "--workspace",
@@ -147,9 +147,9 @@
         ]
       ],
       "returncode": 0,
-      "duration_seconds": 7.318,
+      "duration_seconds": 7.392,
       "status": "passed",
-      "output_tail": "Processing D:\\05-universe\\01-quanta-engine\\quantaengine\\dist\\quanta_engine-0.3.0-py3-none-any.whl\nInstalling collected packages: quanta-engine\n  Attempting uninstall: quanta-engine\n    Found existing installation: quanta-engine 0.2.0\n    Not uninstalling quanta-engine at c:\\users\\lake\\appdata\\local\\programs\\python\\python314\\lib\\site-packages, outside environment C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-dhfwh0g1\\venv\n    Can't uninstall 'quanta-engine'. No files were found to uninstall.\nSuccessfully installed quanta-engine-0.3.0\n\n[notice] A new release of pip is available: 26.1.1 -> 26.1.2\n[notice] To update, run: C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-dhfwh0g1\\venv\\Scripts\\python.exe -m pip install --upgrade pip\n\n\n+--------------------------------------------------------------------------+\n| Theory | Family                 | Version | Engine              | Parent |\n|--------+------------------------+---------+---------------------+--------|\n| T-0001 | conservative_eft       | 0.1.0   | analytic_compiler   | -      |\n| T-0002 | exploratory_generative | 0.1.0   | variational_relaxer | -      |\n| T-0003 | minimal_axiom          | 0.1.0   | minimal_axiom       | -      |\n+--------------------------------------------------------------------------+\n"
+      "output_tail": "Processing D:\\05-universe\\01-quanta-engine\\quantaengine\\dist\\quanta_engine-0.3.0-py3-none-any.whl\nInstalling collected packages: quanta-engine\n  Attempting uninstall: quanta-engine\n    Found existing installation: quanta-engine 0.2.0\n    Not uninstalling quanta-engine at c:\\users\\lake\\appdata\\local\\programs\\python\\python314\\lib\\site-packages, outside environment C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-7mzkwxn0\\venv\n    Can't uninstall 'quanta-engine'. No files were found to uninstall.\nSuccessfully installed quanta-engine-0.3.0\n\n[notice] A new release of pip is available: 26.1.1 -> 26.1.2\n[notice] To update, run: C:\\Users\\lake\\AppData\\Local\\Temp\\quanta-b-wheel-7mzkwxn0\\venv\\Scripts\\python.exe -m pip install --upgrade pip\n\n\n+--------------------------------------------------------------------------+\n| Theory | Family                 | Version | Engine              | Parent |\n|--------+------------------------+---------+---------------------+--------|\n| T-0001 | conservative_eft       | 0.1.0   | analytic_compiler   | -      |\n| T-0002 | exploratory_generative | 0.1.0   | variational_relaxer | -      |\n| T-0003 | minimal_axiom          | 0.1.0   | minimal_axiom       | -      |\n+--------------------------------------------------------------------------+\n"
     }
   ]
 }
